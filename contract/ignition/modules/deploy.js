@@ -9,14 +9,9 @@ const BuzzCoinModule = buildModule("BuzzCoinModule", (m) => {
 });
 
 const AnonymousVotingModule = buildModule("AnonymousVotingModule", (m) => {
-    const votingDuration = m.getParameter("votingDuration", 3600);
-
     const buzzCoin = m.useModule(BuzzCoinModule).buzzCoin;
 
-    const anonymousVoting = m.contract("AnonymousVoting", [
-        buzzCoin,
-        votingDuration,
-    ]);
+    const anonymousVoting = m.contract("AnonymousVoting", [buzzCoin]);
 
     return { anonymousVoting };
 });
