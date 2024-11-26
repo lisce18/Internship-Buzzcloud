@@ -7,21 +7,21 @@ contract AnonymousVoting{
     enum VotingState {NotStarted, Ongoing, Finished}
 
     struct Option {
-        bytes32 name;
+        string name;
         uint voteCount;
     }
 
     Option[] public options;
     VotingState public votingState;
     mapping(address => bool) public hasVoted;
-    bytes32 public winner;
+    string public winner;
     address public owner;
     uint256 public votingEnd;
     IERC20 public buzzCoin;
 
     event VotingStarted(uint256 votingEnd);
     event VoteCast(address voter, string message);
-    event VotingFinished(bytes32 winner);
+    event VotingFinished(string winner);
 
     constructor(address _buzzCoin) {
         owner = msg.sender;
@@ -50,7 +50,7 @@ contract AnonymousVoting{
         _;
     }
 
-    function startVoting(bytes32[] memory _votingOptions, uint256 _votingDuration) public onlyOwner inState(VotingState.NotStarted){
+    function startVoting(string[] memory _votingOptions, uint256 _votingDuration) public onlyOwner inState(VotingState.NotStarted){
         require(_votingOptions.length > 1, 'Must have at least 2 voting options!');
         for(uint i = 0; i < _votingOptions.length; i++){
         options.push(Option({name: _votingOptions[i], voteCount: 0}));
@@ -60,12 +60,12 @@ contract AnonymousVoting{
         emit VotingStarted(votingEnd);
     }
 
-    function vote(bytes32 optionName) public inState(VotingState.Ongoing) onlyTokenHolder onlyBeforeEnd{
+    function vote(string memory optionName) public inState(VotingState.Ongoing) onlyTokenHolder onlyBeforeEnd{
         require(!hasVoted[msg.sender], 'You have already voted!');
 
         bool _found = false;
         for(uint i = 0; i < options.length; i++){
-            if(options[i].name == optionName){
+            if(keccak256(abi.encodePacked(options[i].name)) == keccak256(abi.encodePacked(optionName))){
                 options[i].voteCount += 1;
                 _found = true;
                 break;
@@ -85,7 +85,7 @@ contract AnonymousVoting{
         votingState = VotingState.Finished;
 
         uint256 highestVotes = 0;
-        bytes32 winningOption;
+        string memory winningOption;
         for(uint256 i = 0; i < options.length; i++){
             if(options[i].voteCount > highestVotes){
                 highestVotes = options[i].voteCount;
@@ -96,8 +96,12 @@ contract AnonymousVoting{
         emit VotingFinished(winner);
     }
 
-    function getWinner() public view returns (bytes32){
+    function getWinner() public view returns (string memory){
         require(votingState == VotingState.Finished, 'Voting has not ended yet!');
         return winner;
+    }
+
+    function getOptionCount () public view returns (uint256){
+        return options.length;
     }
 }

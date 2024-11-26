@@ -36,11 +36,7 @@ describe("AnonymousVoting", function () {
             it("Should allow the owner to start the voting", async function () {
                 const { contract, owner } = await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await expect(
                     contract.connect(owner).startVoting(options, 3600)
@@ -50,11 +46,7 @@ describe("AnonymousVoting", function () {
             it("Should not allow non-owner to start voting", async function () {
                 const { contract, addr1 } = await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await expect(
                     contract.connect(addr1).startVoting(options, 3600)
@@ -64,11 +56,7 @@ describe("AnonymousVoting", function () {
             it("Should not allow owner to start a voting when one is already started", async function () {
                 const { contract, owner } = await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -80,7 +68,7 @@ describe("AnonymousVoting", function () {
             it("Should not allow starting a voting with less than 2 options", async function () {
                 const { contract, owner } = await deployContractFixture();
 
-                const options = [ethers.encodeBytes32String("Option1")];
+                const options = ["Option1"];
 
                 await expect(
                     contract.connect(owner).startVoting(options, 3600)
@@ -90,11 +78,7 @@ describe("AnonymousVoting", function () {
             it("Should allow starting a vote with duplicate answers", async function () {
                 const { contract, owner } = await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option1"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await expect(
                     contract.connect(owner).startVoting(options, 3600)
@@ -105,11 +89,7 @@ describe("AnonymousVoting", function () {
             it("Should finish the vote when time runs out", async function () {
                 const { contract, owner } = await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -124,11 +104,7 @@ describe("AnonymousVoting", function () {
                 const { buzzCoin, contract, owner, addr1, addr2, addr3 } =
                     await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -146,17 +122,13 @@ describe("AnonymousVoting", function () {
                 await contract.finishVoting();
 
                 const winner = await contract.getWinner();
-                expect(winner).to.equal(ethers.encodeBytes32String("Option2"));
+                expect(winner).to.equal("Option2");
             });
 
             it("Should not allow finishing the vote before the voting period has ended", async function () {
                 const { contract, owner } = await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -179,11 +151,7 @@ describe("AnonymousVoting", function () {
                 const { buzzCoin, contract, owner, addr1 } =
                     await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -200,11 +168,7 @@ describe("AnonymousVoting", function () {
                 const { contract, owner, addr1 } =
                     await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -217,11 +181,7 @@ describe("AnonymousVoting", function () {
                 const { buzzCoin, contract, owner, addr1 } =
                     await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -239,11 +199,7 @@ describe("AnonymousVoting", function () {
                 const { buzzCoin, contract, owner, addr1 } =
                     await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -262,11 +218,7 @@ describe("AnonymousVoting", function () {
                 const { buzzCoin, contract, owner, addr1 } =
                     await deployContractFixture();
 
-                const options = [
-                    ethers.encodeBytes32String("Option1"),
-                    ethers.encodeBytes32String("Option2"),
-                    ethers.encodeBytes32String("Option3"),
-                ];
+                const options = ["Option1", "Option2", "Option3"];
 
                 await contract.connect(owner).startVoting(options, 3600);
 
@@ -284,11 +236,23 @@ describe("AnonymousVoting", function () {
 
         describe("Get Winner", function () {
             it("Should revert when called before voting has ended", async function () {
-                const { contract, owner } = await deployContractFixture();
+                const { contract } = await deployContractFixture();
 
                 await expect(contract.getWinner()).to.be.revertedWith(
                     "Voting has not ended yet!"
                 );
+            });
+        });
+
+        describe("Get Option Count", function () {
+            it("Should return the correct number of options", async function () {
+                const { contract, owner } = await deployContractFixture();
+
+                const options = ["Option1", "Option2", "Option3"];
+
+                await contract.connect(owner).startVoting(options, 3600);
+
+                expect(await contract.getOptionCount()).to.equal(3);
             });
         });
     });
